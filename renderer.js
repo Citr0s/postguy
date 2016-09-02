@@ -180,6 +180,8 @@ var vm = new Vue({
       if (!vm.request.url) return;
       vm.submitting = true;
       vm.request.body = requestEditor.getValue();
+      requestEditor.setValue(formatJson(vm.request.body));
+      responseEditor.setValue(`{}`);
       ipc.send('post', {
         call: vm.request.verb
         , request: {
@@ -193,8 +195,8 @@ var vm = new Vue({
       vm.request = deepClone(vm.logs[index]).request;
       vm.request.headers.$set(vm.request.headers);
       vm.response = deepClone(vm.logs[index]).response;
-      requestEditor.setValue(JSON.stringify(vm.request.body, null, '\t'));
-      responseEditor.setValue(JSON.stringify(vm.response.body, null, '\t'));
+      requestEditor.setValue(formatJson(vm.request.body));
+      responseEditor.setValue(formatJson(vm.response.body));
     }
     , addHeader: () => {
       if (!vm.newHeader.attribute || !vm.newHeader.value) return;
@@ -214,12 +216,15 @@ ipc.on('reply', (event, arg) => {
     , response: deepClone(vm.response)
   });
   if (vm.response.error) {
-    responseEditor.setValue(JSON.stringify(vm.response, null, '\t') || `{}`);
+    responseEditor.setValue(formatJson(vm.response) || `{}`);
     return;
   }
-  responseEditor.setValue(JSON.stringify(vm.response.body, null, '\t') || `{}`);
+  responseEditor.setValue(formatJson(vm.response.body) || `{}`);
 });
 var deepClone = (o) => {
   return JSON.parse(JSON.stringify(o));
+}
+var formatJson = (o) => {
+  return JSON.stringify(JSON.parse(o), null, 2);
 }
 setupEditors();
