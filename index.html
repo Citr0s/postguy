@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Postguy</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="editor.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+</head>
+
+<body id="app">
+  <div id="sidePanel">
+    <div id="title">History</div>
+    <ul id="requestLog">
+      <li class="loggedRequest" v-for="(index, log) in logs" v-on:click="loadLoggedRequest(index)">
+        <div id="verb" v-bind:class="[log.request.verb]">{{log.request.verb}}</div>
+        <div id="url">{{log.request.url}}</div>
+      </li>
+    </ul>
+  </div>
+  <div id="mainPanel">
+    <h1>
+    {{message}} {{computed}}
+    <select v-model="editorTheme" v-on:change="themeEditor(editorTheme)">
+      <option v-for="theme in themes" v-bind:value="theme.value">
+        {{ theme.text }}
+      </option>
+    </select>
+  </h1>
+    <form id="urlbar" v-on:submit.prevent="post()">
+      <select v-model="request.verb">
+        <option selected>get</option>
+        <option>post</option>
+        <option>put</option>
+        <option>patch</option>
+        <option>delete</option>
+      </select>
+      <input id="input" type="text" placeholder="http://localhost/api" v-model="request.url">
+      <input id="submit" type="submit" value="send" v-bind:disabled="disableSubmit"> </form> <span id="headerBar">
+    <div class="header" v-for="(index, header) in request.headers">
+      <input id="attribute" type="text" placeholder="attribute" v-model="header.attribute">
+      <input id="value" type="text" placeholder="value"  v-model="header.value">
+      <input id="remove" type="button" v-on:click="removeHeader(index)" value="remove">
+    </div>
+    <div class="newHeader">
+      <input id="attribute" type="text" placeholder="attribute" v-model="newHeader.attribute">
+      <input id="value" type="text" placeholder="value"  v-model="newHeader.value">
+      <input id="add" type="button" v-on:click="addHeader()" value="add">
+    </div>
+  </span>
+    <div id="editors">
+      <div id="requestEditor" class="editor">{}</div>
+      <div id="statusBar">Status {{response.response.statusCode}} {{response.response.statusMessage}}</div>
+      <div id="responseEditor" class="editor">{}</div>
+    </div>
+  </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+<script>
+  require('./renderer.js')
+</script>
+
+</html>

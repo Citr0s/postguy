@@ -1,0 +1,16 @@
+#requestEditor {
+  margin: 1rem;
+}
+
+#responseEditor {
+  margin: 1rem;
+}
+
+.editor {
+  height: 30rem;
+  border: 1px solid rgba(238, 238, 238, 0.15);
+}
+
+#editors {
+  display: block;
+}
