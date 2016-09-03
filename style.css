@@ -1,10 +1,7 @@
-* {
-  font-family: monospace;
-}
-
 body {
   background-color: rgb(39, 40, 34);
   color: white;
+  font-family: monospace;
 }
 
 #mainPanel {
@@ -23,6 +20,10 @@ body {
   width: 14rem;
   background-color: rgb(39, 40, 34);
   border: 1px solid rgba(238, 238, 238, 0.15);
+}
+
+#themeBar {
+  display: none;
 }
 
 #sidePanel #title {

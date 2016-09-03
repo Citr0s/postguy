@@ -22,7 +22,7 @@
   <div id="mainPanel">
     <h1>
     {{message}} {{computed}}
-    <select v-model="editorTheme" v-on:change="themeEditor(editorTheme)">
+    <select id="themeBar" v-model="editorTheme" v-on:change="themeEditor(editorTheme)">
       <option v-for="theme in themes" v-bind:value="theme.value">
         {{ theme.text }}
       </option>
