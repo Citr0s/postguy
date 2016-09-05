@@ -31,12 +31,10 @@
       </h1>
       <div id="tabBar">
         <div class="tab" v-for="(index, tab) in tabs" v-on:click="changeTab(index)">
-          <div id="title">{{tab.request.url}}</div>
-          <div id="removeTab" v-on:click="removeTab(index)">X</div>
+          <input id="title" v-model="tab.request.url" placeholder="Tab {{index + 1}}" disabled>
+          <input id="removeTab" type="button" v-on:click="removeTab(index)" value="x">
         </div>
-        <div id="addTab" v-on:click="addTab()">
-          +
-        </div>
+        <input id="addTab" type="button" v-on:click="addTab()" value="+">
       </div>
     </div>
     <div id="mainPanel">

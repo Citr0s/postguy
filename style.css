@@ -16,7 +16,7 @@ body {
   font-family: monospace;
 }
 
-#page{
+#page {
   position: absolute;
   top: 0;
   right: 0;
@@ -28,20 +28,26 @@ body {
 }
 
 .tab {
+  margin: 0 0.5%;
+  display: flex;
   border: 1px solid rgba(238, 238, 238, 0.15);
-  width: 10%;
-  height: 2.5%;
 }
 
 .tab #title {
-  width: auto;
+  width: 100%;
 }
 
 .tab #removeTab {
-    float: right;
+  float: right;
+  padding: 2%;
 }
 
-h1{
+#tabBar #addTab {
+  padding: 0.5%;
+  border: none;
+}
+
+h1 {
   color: white;
 }
 
