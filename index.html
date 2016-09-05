@@ -19,26 +19,38 @@
       </li>
     </ul>
   </div>
-  <div id="mainPanel">
-    <h1>
-    {{message}} {{computed}}
-    <select id="themeBar" v-model="editorTheme" v-on:change="themeEditor(editorTheme)">
+  <div id="page">
+    <div id="headerBar">
+      <h1>
+        {{message}} {{computed}}
+        <select id="themeBar" v-model="editorTheme" v-on:change="themeEditor(editorTheme)">
       <option v-for="theme in themes" v-bind:value="theme.value">
         {{ theme.text }}
       </option>
     </select>
-  </h1>
-    <form id="urlbar" v-on:submit.prevent="post()">
-      <select v-model="request.verb">
+      </h1>
+      <div id="tabBar">
+        <div class="tab" v-for="(index, tab) in tabs" v-on:click="changeTab(index)">
+          <div id="title">{{tab.request.url}}</div>
+          <div id="removeTab" v-on:click="removeTab(index)">X</div>
+        </div>
+        <div id="addTab" v-on:click="addTab()">
+          +
+        </div>
+      </div>
+    </div>
+    <div id="mainPanel">
+      <form id="urlbar" v-on:submit.prevent="post()">
+        <select v-model="tabs[currentTabIndex].request.verb">
         <option selected>get</option>
         <option>post</option>
         <option>put</option>
         <option>patch</option>
         <option>delete</option>
       </select>
-      <input id="input" type="text" placeholder="http://localhost/api" v-model="request.url">
-      <input id="submit" type="submit" value="send" v-bind:disabled="disableSubmit"> </form> <span id="headerBar">
-    <div class="header" v-for="(index, header) in request.headers">
+        <input id="input" type="text" placeholder="http://localhost/api" v-model="tabs[currentTabIndex].request.url">
+        <input id="submit" type="submit" value="send" v-bind:disabled="disableSubmit"> </form> <span id="headerBar">
+    <div class="header" v-for="(index, header) in tabs[currentTabIndex].request.headers">
       <input id="attribute" type="text" placeholder="attribute" v-model="header.attribute">
       <input id="value" type="text" placeholder="value"  v-model="header.value">
       <input id="remove" type="button" v-on:click="removeHeader(index)" value="remove">
@@ -49,10 +61,11 @@
       <input id="add" type="button" v-on:click="addHeader()" value="add">
     </div>
   </span>
-    <div id="editors">
-      <div id="requestEditor" class="editor">{}</div>
-      <div id="statusBar">Status {{response.response.statusCode}} {{response.response.statusMessage}}</div>
-      <div id="responseEditor" class="editor">{}</div>
+      <div id="editors">
+        <div id="requestEditor" class="editor">{}</div>
+        <div id="statusBar">Status {{response.response.statusCode}} {{response.response.statusMessage}}</div>
+        <div id="responseEditor" class="editor">{}</div>
+      </div>
     </div>
   </div>
 </body>
