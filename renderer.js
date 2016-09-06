@@ -15,13 +15,30 @@
     requestEditor.resize();
     requestEditor.setBehavioursEnabled(true);
     requestEditor.getSession().setUseWrapMode(true);
+    requestEditor.setOptions({
+      readOnly: true,
+      highlightActiveLine: false,
+      highlightGutterLine: false,
+      onLoad: function (_editor) {
+        _editor.$blockScrolling = 1;
+      }
+    });
+
     responseEditor.setTheme('ace/theme/' + vm.editorTheme);
     responseEditor.getSession().setMode("ace/mode/json");
     responseEditor.setShowPrintMargin(false);
     responseEditor.setHighlightActiveLine(true);
     responseEditor.resize();
-    requestEditor.setBehavioursEnabled(true);
-    requestEditor.getSession().setUseWrapMode(true);
+    responseEditor.setBehavioursEnabled(true);
+    responseEditor.getSession().setUseWrapMode(true);
+    responseEditor.setOptions({
+      readOnly: true,
+      highlightActiveLine: false,
+      highlightGutterLine: false,
+      onLoad: function (_editor) {
+        _editor.$blockScrolling = 1;
+      }
+    });
   }
 
   var vm = new Vue({
