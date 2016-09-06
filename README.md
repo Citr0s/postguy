@@ -1,7 +1,7 @@
 
-# ~~Postguy~~ PostUI
+# ~~Postguy~~ ~~PostUI~~ NotPostman
 
-##### Postman + SoapUI = PostUI
+##### Its not Postman
 
 A Postman like program that removes the cloud syncing
 but instead saves in a format similar to the way SoapUI does it,
