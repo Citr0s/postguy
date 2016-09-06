@@ -113,7 +113,7 @@
         }],
       editorTheme: 'monokai',
       logs: [],
-      message: 'Postguy',
+      message: 'NotPostman',
       currentTabIndex: 0,
       tabs: [{
         newHeader: {},
