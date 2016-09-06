@@ -118,7 +118,7 @@
       tabs: [{
         newHeader: {},
         request: {
-          verb: '',
+          verb: 'get',
           headers: [],
           url: '',
           body: '',
@@ -183,7 +183,7 @@
         this.tabs.push({
           newHeader: {},
           request: {
-            verb: '',
+            verb: 'get',
             headers: [],
             url: '',
             body: '',
