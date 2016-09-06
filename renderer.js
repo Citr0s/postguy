@@ -205,28 +205,28 @@
       changeTab: function (index) {
         this.tabs[this.currentTabIndex].request.displayValue = requestEditor.getValue();
         this.currentTabIndex = index;
-        requestEditor.setValue(this.tabs[this.currentTabIndex].request.displayValue || `{}`);
-        responseEditor.setValue(this.tabs[this.currentTabIndex].response.displayValue || `{}`);
+        requestEditor.setValue(this.tabs[this.currentTabIndex].request.displayValue || '{}');
+        responseEditor.setValue(this.tabs[this.currentTabIndex].response.displayValue || '{}');
       }
     }
   });
 
   ipc.on('reply', function (event, arg) {
-    this.submitting = false;
-    this.currentTab.response = arg;
+    vm.submitting = false;
+    vm.tabs[vm.currentTabIndex].response = arg;
 
-    this.logs.push({
-      request: deepClone(this.tabs[this.currentTabIndex].request),
-      response: deepClone(this.response)
+    vm.logs.push({
+      request: deepClone(vm.tabs[vm.currentTabIndex].request),
+      response: deepClone(vm.tabs[vm.currentTabIndex].response)
     });
 
-    if (this.response.error) {
-      responseEditor.setValue(formatJson(this.response) || '{}');
+    if (vm.tabs[vm.currentTabIndex].response.error) {
+      responseEditor.setValue(formatJson(vm.tabs[vm.currentTabIndex].response) || '{}');
     } else {
-      responseEditor.setValue(formatJson(this.response.body) || '{}');
+      responseEditor.setValue(formatJson(vm.tabs[vm.currentTabIndex].response.body) || '{}');
     }
 
-    this.tabs[this.currentTabIndex].response.displayValue = responseEditor.getValue();
+    vm.tabs[vm.currentTabIndex].response.displayValue = responseEditor.getValue();
   });
 
   function deepClone(o) {

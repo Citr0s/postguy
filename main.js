@@ -16,7 +16,13 @@ function createWindow() {
   });
 }
 
-app.on('ready', createWindow);
+app.on('ready', function () {
+  createWindow();
+  if (process.env.NODE_ENV !== 'production') {
+    require('vue-devtools').install();
+    mainWindow.webContents.openDevTools();
+  }
+});
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {

@@ -47,7 +47,7 @@
         <option>delete</option>
       </select>
         <input id="input" type="text" placeholder="http://localhost/api" v-model="tabs[currentTabIndex].request.url">
-        <input id="submit" type="submit" value="send" v-bind:disabled="disableSubmit"> </form> <span id="headerBar">
+        <input id="submit" type="submit" value="send"> </form> <span id="headerBar">
     <div class="header" v-for="(index, header) in tabs[currentTabIndex].request.headers">
       <input id="attribute" type="text" placeholder="attribute" v-model="header.attribute">
       <input id="value" type="text" placeholder="value"  v-model="header.value">
