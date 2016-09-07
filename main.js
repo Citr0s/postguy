@@ -71,8 +71,8 @@ createWindow = () => {
 app.on('ready', () => {
   createWindow();
   if (process.env.NODE_ENV !== 'production') {
-    // require('vue-devtools').install();
-    // mainWindow.webContents.openDevTools();
+    require('vue-devtools').install();
+    mainWindow.webContents.openDevTools();
   }
 });
 

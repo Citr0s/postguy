@@ -29,21 +29,34 @@ module.exports = {
     }
   },
   walk: (path, callback, options) => {
-    var items = [] // files, directories, symlinks, etc
-    var fs = require('fs-extra')
+    var retval = {};
     fs.walk(path)
-      .on('readable', function () {
-        var item
-        while ((item = this.read())) {
-          if (options && options.shortPath) {
-            item.path = item.path.replace(path, '');
-          }
-          if (item.path !== '')
-            items.push(item.path)
+      .on('data', (item) => {
+
+        var itemPath = item.path;
+        if (options && options.shortPath) {
+          itemPath = itemPath.replace(path, '');
         }
+
+        var arrays = itemPath.split('\\');
+        var name = arrays[arrays.length - 1];
+
+        arrays.reduce((o, s) => {
+          if (s === '')
+            s = 'root';
+          if (s !== name) {
+            if (o[s]) {
+              return o[s];
+            }
+            return o[s] = { name: name, children: [] };
+          }
+          return o.children.push({
+            name: name
+          });
+        }, retval)
       })
-      .on('end', function () {
-        callback(items);
+      .on('end', () => {
+        callback(retval);
       })
   }
 }

@@ -6,7 +6,6 @@
   var theme = 'github';
   var ace = require('./ace.js');
   var helpers = require('../helpers/helper.js');
-  var fileTree = require('../helpers/fileTree.js');
 
   var requestEditor = ace.setupEditor('requestEditor');
   var responseEditor = ace.setupEditor('responseEditor', true);
@@ -164,5 +163,6 @@
 
   ipc.on('projectLoaded', function (event, arg) {
     vm.collections = arg;
+    console.logJson(vm.collections);
   });
 })();

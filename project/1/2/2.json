@@ -1,0 +1,54 @@
+{
+  "request": {
+    "call": "get",
+    "request": {
+      "body": "{}",
+      "headers": {
+        "Authorization": "Basic QXV0b1RyYWRlcjp5UlZTbmQ0Tko5cEt2UHJn",
+        "Content-Type": "application/json"
+      },
+      "url": "http://services.localiis/api/helloworld"
+    }
+  },
+  "response": {
+    "error": null,
+    "response": {
+      "statusCode": 200,
+      "body": "[\"Getting\",\"A\",\"List\",\"Of\",\"Hello\",\"Worlds\"]",
+      "headers": {
+        "cache-control": "no-cache",
+        "pragma": "no-cache",
+        "content-type": "application/json; charset=utf-8",
+        "expires": "-1",
+        "server": "Microsoft-IIS/8.5",
+        "x-host": "ST",
+        "date": "Wed, 07 Sep 2016 13:03:43 GMT",
+        "connection": "close",
+        "content-length": "44"
+      },
+      "request": {
+        "uri": {
+          "protocol": "http:",
+          "slashes": true,
+          "auth": null,
+          "host": "services.localiis",
+          "port": 80,
+          "hostname": "services.localiis",
+          "hash": null,
+          "search": null,
+          "query": null,
+          "pathname": "/api/helloworld",
+          "path": "/api/helloworld",
+          "href": "http://services.localiis/api/helloworld"
+        },
+        "method": "GET",
+        "headers": {
+          "Authorization": "Basic QXV0b1RyYWRlcjp5UlZTbmQ0Tko5cEt2UHJn",
+          "Content-Type": "application/json",
+          "content-length": 2
+        }
+      }
+    },
+    "body": "[\"Getting\",\"A\",\"List\",\"Of\",\"Hello\",\"Worlds\"]"
+  }
+}
