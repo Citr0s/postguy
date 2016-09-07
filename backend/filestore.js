@@ -27,5 +27,23 @@ module.exports = {
     } catch (err) {
       return err;
     }
+  },
+  walk: (path, callback, options) => {
+    var items = [] // files, directories, symlinks, etc
+    var fs = require('fs-extra')
+    fs.walk(path)
+      .on('readable', function () {
+        var item
+        while ((item = this.read())) {
+          if (options && options.shortPath) {
+            item.path = item.path.replace(path, '');
+          }
+          if (item.path !== '')
+            items.push(item.path)
+        }
+      })
+      .on('end', function () {
+        callback(items);
+      })
   }
 }

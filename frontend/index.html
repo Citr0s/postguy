@@ -23,10 +23,9 @@
           <input id="remove" type="button" v-on:click="deleteLoggedRequest(index)" value="x">
         </li>
       </ul>
-      <ul v-if="sidebarSelection === 'collections'" id="requestLog">
-        <li class="loggedRequest" v-for="(index, collection) in collections" v-on:click="loadLoggedRequest(index)">
-          <div id="verb" v-bind:class="[log.request.verb]">{{log.request.verb}}</div>
-          <div id="url">{{log.request.url}}</div>
+      <ul v-if="sidebarSelection === 'collections'">
+        <li v-for="(index, collection) in collections">
+          {{collection}}
         </li>
       </ul>
     </div>

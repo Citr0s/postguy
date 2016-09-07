@@ -4,10 +4,12 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipc = require('electron').ipcMain;
 const request = require('request');
-const fileStore = require('./backend/filestore.js')
+const fileStore = require('./backend/filestore.js');
+const helper = require('./helpers/helper.js');
 const {dialog} = require('electron');
 let mainWindow;
 let projectDirectory = '';
+let saveHistory = false;
 
 const template = [
   {
@@ -17,6 +19,17 @@ const template = [
         label: 'Open Project',
         click(item, focusedWindow) {
           projectDirectory = dialog.showOpenDialog({ properties: ['openDirectory'] });
+          loadProject(projectDirectory[0], (fileList) => {
+            mainWindow.webContents.send('projectLoaded', fileList);
+          }, { shortPath: true });
+        }
+      },
+      {
+        label: 'Save History',
+        type: 'checkbox',
+        clicked: true,
+        click(item, focusedWindow) {
+          saveHistory = !saveHistory;
         }
       }
     ]
@@ -35,7 +48,7 @@ const template = [
         label: 'Toggle Developer Tools',
         accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
         click(item, focusedWindow) {
-          if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+          if (focusedWindow) focusedWindow.webContents.toggleDevTools();
         }
       }]
   }]
@@ -63,6 +76,15 @@ app.on('ready', () => {
   }
 });
 
+var loadProject = (root, callback, options) => {
+
+  if (!callback) {
+    callback = (items) => { return items; }
+  }
+
+  return fileStore.walk(root, callback, options);
+}
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -77,15 +99,20 @@ app.on('activate', () => {
 
 ipc.on('post', (event, arg) => {
 
-  fileStore.save(projectDirectory, 'test.json', arg);
-
   request[arg.call](arg.request, (error, response, body) => {
-    event.sender.send('reply', {
+
+    var response = {
       error: error,
       response:
       response,
       body: body
-    });
+    };
+
+    if (saveHistory) {
+      fileStore.save('history', helper.formatJson(Date.now()), { request: arg, response: response });
+    }
+
+    event.sender.send('reply', response);
   });
 });
 
@@ -99,5 +126,7 @@ ipc.on('load', (event, arg) => {
 });
 
 ipc.on('delete', (event, arg) => {
+  
   fileStore.save(projectDirectory, arg);
+
 });
