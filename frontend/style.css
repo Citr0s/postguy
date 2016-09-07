@@ -10,6 +10,10 @@
   margin: 0;
 }
 
+:focus, textarea:focus {
+    outline: 0;
+}
+
 body {
   background-color: rgb(39, 40, 34);
   color: white;
@@ -35,6 +39,10 @@ body {
 
 .tab.selected {
   background-color: rgb(89, 90, 84);
+}
+
+.tab:hover {
+  background-color: rgb(139, 140, 134);
 }
 
 .tab #title {
@@ -77,13 +85,28 @@ h1 {
   border-bottom: 1px solid rgba(238, 238, 238, 0.15);
 }
 
+input:focus {  
+  border-bottom: 1px solid rgba(238, 238, 238, 0.33);
+}
+
 input,
 select,
-button {
+button{
   border: none;
   background-color: transparent;
   color: white;
   border-bottom: 1px solid rgba(238, 238, 238, 0.15);
+}
+
+
+option {
+  background-color: rgb(39, 40, 34);
+}
+
+button:hover,
+input[type=button]:hover,
+input[type=submit]:hover {
+  background-color: rgb(139, 140, 134);
 }
 
 #urlbar {
@@ -135,6 +158,10 @@ button {
   display: flex;
   border-bottom: 1px solid rgba(238, 238, 238, 0.15);
   padding: 1rem 0;
+}
+
+.loggedRequest #remove {
+  border: none;
 }
 
 .loggedRequest div {

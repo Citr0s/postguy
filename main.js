@@ -1,43 +1,53 @@
-var electron = require('electron');
-var app = electron.app;
-var BrowserWindow = electron.BrowserWindow;
-var ipc = require('electron').ipcMain;
-var request = require('request');
-var mainWindow;
+const electron = require('electron');
+const {Menu} = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipc = require('electron').ipcMain;
+const request = require('request');
+const fileStore = require('./backend/filestore.js')
+let mainWindow;
 
-function createWindow() {
+createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600
   });
-  mainWindow.loadURL('file://' + __dirname + '/index.html');
-  mainWindow.on('closed', function () {
+  mainWindow.loadURL(`file://${__dirname}/frontend/index.html`);
+  mainWindow.on('closed', () => {
     mainWindow = null;
   });
+  mainWindow.maximize();
+
+  var template = require('./backend/menu.js')();
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 }
 
-app.on('ready', function () {
+app.on('ready', () => {
   createWindow();
   if (process.env.NODE_ENV !== 'production') {
-    require('vue-devtools').install();
-    mainWindow.webContents.openDevTools();
+    // require('vue-devtools').install();
+    // mainWindow.webContents.openDevTools();
   }
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on('activate', function () {
+app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
 });
 
-ipc.on('post', function (event, arg) {
-  request[arg.call](arg.request, function (error, response, body) {
+ipc.on('post', (event, arg) => {
+
+  fileStore.save('test/test/test', 'test.json', arg);
+
+  request[arg.call](arg.request, (error, response, body) => {
     event.sender.send('reply', {
       error: error,
       response:
