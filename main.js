@@ -5,7 +5,40 @@ const BrowserWindow = electron.BrowserWindow;
 const ipc = require('electron').ipcMain;
 const request = require('request');
 const fileStore = require('./backend/filestore.js')
+const {dialog} = require('electron');
 let mainWindow;
+let projectDirectory = '';
+
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'Open Project',
+        click(item, focusedWindow) {
+          projectDirectory = dialog.showOpenDialog({ properties: ['openDirectory'] });
+        }
+      }
+    ]
+  },
+  {
+    label: 'View',
+    submenu: [
+      {
+        label: 'Reload',
+        accelerator: 'CmdOrCtrl+R',
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.reload()
+        }
+      },
+      {
+        label: 'Toggle Developer Tools',
+        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+        }
+      }]
+  }]
 
 createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -18,7 +51,6 @@ createWindow = () => {
   });
   mainWindow.maximize();
 
-  var template = require('./backend/menu.js')();
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 }
@@ -45,7 +77,7 @@ app.on('activate', () => {
 
 ipc.on('post', (event, arg) => {
 
-  fileStore.save('test/test/test', 'test.json', arg);
+  fileStore.save(projectDirectory, 'test.json', arg);
 
   request[arg.call](arg.request, (error, response, body) => {
     event.sender.send('reply', {
@@ -55,4 +87,17 @@ ipc.on('post', (event, arg) => {
       body: body
     });
   });
+});
+
+ipc.on('save', (event, arg) => {
+  fileStore.save(projectDirectory, arg.name, arg.data);
+});
+
+ipc.on('load', (event, arg) => {
+  var response = fileStore.save(projectDirectory, arg);
+  event.sender.send('loadedFile', response);
+});
+
+ipc.on('delete', (event, arg) => {
+  fileStore.save(projectDirectory, arg);
 });

@@ -3,19 +3,29 @@ var helper = require('../helpers/helper.js');
 
 module.exports = {
   save: (path, name, data) => {
-    var fullpath = `${path}/${name}`;
+    var fullpath = `${path}/${name}.json`;
     var content = helper.formatJson(data);
-    fs.outputFile(fullpath, content,  (err) => {
-      console.log(err);
-    })
+
+    try {
+      fs.outputFileSync(fullpath, content)
+    } catch (err) {
+      return err;
+    }
   },
   load: (path, name) => {
     var fullpath = `${path}${name}`;
-    fs.readFile(fullpath, 'utf-8', (error, data) => {
-      return {
-        error: error,
-        data: data
-      }
-    });
+    try {
+      return fs.readJsonSync(fullpath);
+    } catch (err) {
+      return err;
+    }
+  },
+  delete: (path, name) => {
+    var fullpath = `${path}${name}`;
+    try {
+      fs.removeSync(fullpath);
+    } catch (err) {
+      return err;
+    }
   }
 }
