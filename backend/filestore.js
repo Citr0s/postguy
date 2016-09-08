@@ -1,5 +1,6 @@
 var fs = require('fs-extra')
 var helper = require('../helpers/helper.js');
+var path = require('path')
 
 module.exports = {
   save: (path, name, data) => {
@@ -28,35 +29,22 @@ module.exports = {
       return err;
     }
   },
-  walk: (path, callback, options) => {
-    var retval = {};
-    fs.walk(path)
-      .on('data', (item) => {
-
-        var itemPath = item.path;
-        if (options && options.shortPath) {
-          itemPath = itemPath.replace(path, '');
-        }
-
-        var arrays = itemPath.split('\\');
-        var name = arrays[arrays.length - 1];
-
-        arrays.reduce((o, s) => {
-          if (s === '')
-            s = 'root';
-          if (s !== name) {
-            if (o[s]) {
-              return o[s];
+  walk: (dir) => {
+    var root = {contents:{}}
+    function _walk(dir, parent) {
+        var files = fs.readdirSync(dir)
+        for (file of files) {
+            var newpath = path.join(dir, file)
+            parent.contents[file] = {
+                name:file
             }
-            return o[s] = { name: name, children: [] };
-          }
-          return o.children.push({
-            name: name
-          });
-        }, retval)
-      })
-      .on('end', () => {
-        callback(retval);
-      })
+            if (fs.statSync(newpath).isDirectory()) {
+                parent.contents[file].contents = {}
+                _walk(newpath, parent.contents[file])
+            }
+        }
+    }
+    _walk(dir, root)
+    return root
   }
 }
