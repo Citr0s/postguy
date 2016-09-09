@@ -1,0 +1,141 @@
+#app {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: rgb(255,255,255);
+  color: rgb(0,0,0); 
+}
+
+#page {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 75%;
+  padding:0 15px;
+}
+
+#sidePanel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 25%;  
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  background-color:rgba(0, 0, 0, 0.8);
+  box-shadow:5px 0 15px rgba(0, 0, 0, 0.3);
+  color:#fff;
+}
+#sidePanel #title {
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+  background-color:rgba(0, 0, 0, 0.3);
+  color:#fff;
+  border:none;
+  padding:15px;
+}
+
+#requestLog {
+  -webkit-padding-start: 0;
+  list-style-type: none;
+  overflow: hidden;
+  margin-top: -0.25rem;
+}
+
+.loggedRequest {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding:15px;
+  display: table;
+  width: 100%;
+}
+
+.loggedRequest #remove {
+  border: none;
+  background-color:transparent;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.loggedRequest div {
+  margin-right: 1rem;
+}
+
+.loggedRequest #url {
+  word-break: break-word;
+  font-size: 1.2rem;
+  padding: 5px;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.loggedRequest #verb {
+  font-size: 1.1rem;
+  font-weight: bolder;
+  color: red;
+  text-transform:uppercase;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.loggedRequest #verb.get {
+  color: red;
+}
+
+.loggedRequest #verb.post {
+  color: orange;
+}
+
+.loggedRequest #verb.put {
+  color: green;
+}
+
+.loggedRequest #verb.patch {
+  color: blue;
+}
+
+.loggedRequest #verb.delete {
+  color: blueviolet;
+}
+
+#tabBar{
+  color:#ccc;
+  margin-bottom:15px;
+}
+
+#tabBar input, 
+#tabBar button{
+  border:none;
+  background-color:transparent;
+  color:rgba(0, 0, 0, 0.3);
+}
+
+#tabBar a{
+  background-color:rgba(0, 0, 0, 0.1);
+}
+
+#tabBar a:hover{
+  background-color:rgba(0, 0, 0, 0.2);
+}
+
+#tabBar li.active a{
+  background-color:rgba(255, 255, 255, 1);
+}
+
+#tabBar li.active input, 
+#tabBar li.active button{
+  color:#333;
+}
+
+#statusBar{
+  margin: 1rem 0;
+}
