@@ -1,0 +1,12 @@
+{
+  "name": "NotPostman",
+  "version": "1.0.0",
+  "description": "A postman replacement",
+  "main": "main.js",
+  "author": "Codeweavers",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "fs-extra": "^0.30.0",
+    "request": "^2.74.0"
+  }
+}

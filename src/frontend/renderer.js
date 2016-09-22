@@ -2,16 +2,21 @@
 (function () {
   "use strict";
 
+  require("./index.html");
+  require("./sass/main.scss");
+
   var ipc = require('electron').ipcRenderer;
   var theme = 'github';
   var ace = require('./ace.js');
   var helpers = require('../helpers/helper.js');
-
+  var submitButton = document.getElementById('submit');
+  var submitLoader = document.getElementsByClassName('spacer')[0];
   var requestEditor = ace.setupEditor('requestEditor');
   var responseEditor = ace.setupEditor('responseEditor', true);
+
   console.logJson = function (object) {
     console.log(helpers.formatJson(object));
-  }
+  };
 
   var vm = new Vue({
     el: '#app',
@@ -24,6 +29,9 @@
       sidebarSelection: 'history',
       collections: {},
       currentTabIndex: 0,
+      statusDetails: '',
+      timeTaken: 0,
+      timeTakenTemp: 0,
       tabs: [{
         newHeader: {},
         request: {
@@ -65,6 +73,22 @@
         set: function (data) {
           this.tabs[this.currentTabIndex] = data;
         }
+      },
+      requestEditor: {
+        get: function () {
+          return requestEditor.getValue();
+        },
+        set: function (data) {
+          requestEditor.setValue(data);
+        }
+      },
+      responseEditor: {
+        get: function () {
+          return responseEditor.getValue();
+        },
+        set: function (data) {
+          responseEditor.setValue(data);
+        }
       }
     },
     methods: {
@@ -75,10 +99,15 @@
       post: function () {
         if (!this.currentTab.request.url) return;
         this.submitting = true;
-        this.currentTab.request.displayValue = requestEditor.getValue();
+        this.currentTab.request.displayValue = this.requestEditor;
         this.currentTab.request.body = this.currentTab.request.displayValue;
-        requestEditor.setValue(helpers.formatJson(this.currentTab.request.displayValue));
-        responseEditor.setValue('{}');
+        this.requestEditor = helpers.formatJson(this.currentTab.request.displayValue);
+        this.responseEditor = '{}';
+        this.timeTakenTemp = new Date();
+        submitButton.setAttribute('disabled', 'disabled');
+
+        submitLoader.classList.add('spin');
+
         ipc.send('post', {
           call: this.currentTab.request.verb,
           request: {
@@ -94,11 +123,11 @@
       },
       loadTab: function (data) {
         this.currentTab.request = data.request;
-        this.currentTab.request.headers = this.currentTab.request.headers;
+        this.currentTab.request.headers = data.request.headers;
+        this.currentTab.response = data.response;
 
-        this.response = data.response;
-        requestEditor.setValue(helpers.formatJson(this.currentTab.request.displayValue));
-        responseEditor.setValue(helpers.formatJson(this.currentTab.response.displayValue));
+        this.requestEditor = helpers.formatJson(this.currentTab.request.body);
+        this.responseEditor = helpers.formatJson(this.currentTab.response.body);
       },
       deleteLoggedRequest: function (index) {
         this.logs.splice(index, 1);
@@ -128,37 +157,45 @@
             displayValue: ''
           }
         });
+        this.currentTabIndex = this.tabs.length - 1;
       },
       removeTab: function (index) {
         this.tabs.splice(index, 1);
         if (this.tabs.length === 0)
           this.addTab();
+        this.changeTab(this.tabs.length - 1);
       },
       changeTab: function (index) {
-        this.currentTab.request.displayValue = requestEditor.getValue();
         this.currentTabIndex = index;
-        requestEditor.setValue(this.currentTab.request.displayValue || '{}');
-        responseEditor.setValue(this.currentTab.response.displayValue || '{}');
+        this.currentTab.request.body = this.requestEditor;
+        this.requestEditor = this.currentTab.request.body || '{}';
+        this.responseEditor = this.currentTab.response.body || '{}';
       }
     }
   });
 
   ipc.on('reply', function (event, arg) {
+    vm.timeTaken = new Date() - vm.timeTakenTemp;
     vm.submitting = false;
     vm.currentTab.response = arg;
+    vm.statusDetails = arg.response;
+    submitButton.removeAttribute('disabled');
+
+    submitLoader.classList.remove('spin');
 
     vm.logs.push({
       request: helpers.deepClone(vm.currentTab.request),
       response: helpers.deepClone(vm.currentTab.response)
     });
 
+    var responseMessage = "";
     if (vm.currentTab.response.error) {
-      responseEditor.setValue(helpers.formatJson(vm.currentTab.response) || '{}');
+      responseMessage = helpers.formatJson(vm.currentTab.response);
     } else {
-      responseEditor.setValue(helpers.formatJson(vm.currentTab.response.body) || '{}');
+        responseMessage = helpers.formatJson(vm.currentTab.response.body);
     }
 
-    vm.currentTab.response.displayValue = responseEditor.getValue();
+    vm.responseEditor = responseMessage || '{}';
   });
 
   ipc.on('projectLoaded', function (event, arg) {

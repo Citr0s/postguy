@@ -1,4 +1,4 @@
-module.exports = [
+var themes = [
   {
     text: 'Ambiance',
     value: 'ambiance'
@@ -81,3 +81,5 @@ module.exports = [
     text: 'Xcode',
     value: 'xcode'
   }];
+
+module.exports = themes;

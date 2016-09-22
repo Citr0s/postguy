@@ -1,21 +1,36 @@
 {
-  "name": "postui",
+  "name": "NotPostman",
   "version": "1.0.0",
   "description": "A postman replacement",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "debug": "electron --debug-brk ."
+    "start": "npm install && webpack && electron ./dist/main",
+    "dev": "webpack -w | electron ./dist/main --enable-logging",
+    "watch": "webpack -w",
+    "run": "electron ./dist/main"
   },
   "author": "Codeweavers",
   "license": "CC0-1.0",
   "devDependencies": {
+    "clean-webpack-plugin": "^0.1.10",
+    "copy-webpack-plugin": "^3.0.1",
+    "css-loader": "^0.25.0",
     "electron-prebuilt": "^1.2.0",
+    "file-loader": "^0.9.0",
     "jshint": "^2.9.3",
-    "vue-devtools": "^2.0.4"
+    "json-loader": "^0.5.4",
+    "node-sass": "^3.10.0",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "vue-devtools": "^2.0.4",
+    "webpack": "^1.13.2",
+    "webpack-node-externals": "^1.4.3"
   },
   "dependencies": {
     "fs-extra": "^0.30.0",
     "request": "^2.74.0"
+  },
+  "jshintConfig": {
+    "esversion": 6
   }
 }

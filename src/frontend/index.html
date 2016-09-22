@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <title>NotPostman</title>
-  <!--<link rel="stylesheet" type="text/css" href="style.css">-->
-  <link rel="stylesheet" type="text/css" href="editor.css">
-  <link rel="stylesheet" type="text/css" href="main.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
-
 <body id="app">
-  <div id="sidePanel">
-    <select id="title" v-model="sidebarSelection">
+  <div class="sidebar">
+    <div class="heading">
+        {{message}}
+    </div>
+    <select class="title" v-model="sidebarSelection">
       <option value="history">History</option>
       <option value="collections">Collections</option>
     </select>
@@ -34,15 +31,35 @@
       </ul>
     </div>
   </div>
-  <div id="page">
+  <div class="page">
     <div id="headerBar">
-      <h1>
-        {{message}} {{computed}}
-        <!--<select id="themeBar" v-model="editorTheme" v-on:change="themeEditor(editorTheme)">
-      <option v-for="theme in themes" v-bind:value="theme.value">
-        {{ theme.text }}
-      </option>-->
-        </select>
+      <h1 class="topbar request-properties">
+        <form id="urlbar" v-on:submit.prevent="post()">
+            <div class="col-md-2 request-properties__type-wrapper">
+              <div class="form-group">
+                <select v-model="currentTab.request.verb" class="form-control type-wrapper__field">
+                  <option selected>get</option>
+                  <option>post</option>
+                  <option>put</option>
+                  <option>patch</option>
+                  <option>delete</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6 request-properties__url-wrapper">
+              <div class="form-group">
+                <input id="input" type="text" placeholder="http://localhost/api" v-model="currentTab.request.url" class="form-control url-wrapper__field">
+              </div>
+            </div>
+            <div class="col-md-4 request-properties__button-wrapper">
+              <div class="form-group">
+                <button id="submit" type="submit" class="btn btn-primary button-wrapper__field">Send</button>
+                <div class="spacer">|</div>
+                <button type="button" class="{{ statusDetails != '' ? '_' + statusDetails.statusCode : '' }} btn btn-primary status-wrapper__field">{{ statusDetails != '' ? statusDetails.statusCode + ' ' + statusDetails.statusMessage : 'Status'}}</button>
+                <button type="button" class="btn btn-primary time-wrapper__field">{{ timeTaken != 0 ? timeTaken + 'ms' : 'Time Taken'}}</button>
+              </div>
+            </div>
+        </form>
       </h1>
       <div id="tabBar">
         <ul class="nav nav-tabs">
@@ -65,44 +82,19 @@
       </div>
     </div>
     <div id="mainPanel">
-      <form id="urlbar" v-on:submit.prevent="post()">
-        <div class="row">
-          <div class="col-xs-2">
-            <div class="form-group">
-              <select v-model="tabs[currentTabIndex].request.verb" class="form-control">
-            <option selected>get</option>
-            <option>post</option>
-            <option>put</option>
-            <option>patch</option>
-            <option>delete</option>
-          </select>
-            </div>
-          </div>
-          <div class="col-xs-9">
-            <div class="form-group">
-              <input id="input" type="text" placeholder="http://localhost/api" v-model="tabs[currentTabIndex].request.url" class="form-control">
-            </div>
-          </div>
-          <div class="col-xs-1">
-            <div class="form-group">
-              <input id="submit" type="submit" value="Send" class="btn btn-primary">
-            </div>
-          </div>
-        </div>
-      </form>
       <div id="headerBar">
-        <div class="header row" v-for="(index, header) in tabs[currentTabIndex].request.headers">
-          <div class="col-xs-4">
+        <div class="header row" v-for="(index, header) in currentTab.request.headers">
+          <div class="col-md-4">
             <div class="form-group">
               <input id="attribute" type="text" placeholder="attribute" v-model="header.attribute" class="form-control">
             </div>
           </div>
-          <div class="col-xs-7">
+          <div class="col-md-7">
             <div class="form-group">
               <input id="value" type="text" placeholder="value" v-model="header.value" class="form-control">
             </div>
           </div>
-          <div class="col-xs-1">
+          <div class="col-md-1">
             <div class="form-group" style="text-align:center;">
               <button id="remove" type="button" v-on:click="removeHeader(index)" class="btn btn-default">
                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
@@ -111,17 +103,17 @@
           </div>
         </div>
         <div class="header row">
-          <div class="col-xs-4">
+          <div class="col-md-4">
             <div class="form-group">
               <input id="attribute" type="text" placeholder="attribute" v-model="newHeader.attribute" class="form-control">
             </div>
           </div>
-          <div class="col-xs-7">
+          <div class="col-md-7">
             <div class="form-group">
               <input id="value" type="text" placeholder="value" v-model="newHeader.value" class="form-control">
             </div>
           </div>
-          <div class="col-xs-1" style="text-align:center;">
+          <div class="col-md-1" style="text-align:center;">
             <div class="form-group">
               <button id="add" type="button" v-on:click="addHeader()" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -130,12 +122,9 @@
           </div>
         </div>
       </div>
-      <div id="editors">
-        <div id="requestEditor" class="editor">{}</div>
-        <div id="statusBar" class="form-control">
-          Status {{response.response.statusCode}} {{response.response.statusMessage}}
-        </div>
-        <div id="responseEditor" class="editor">{}</div>
+      <div class="editors row">
+        <div id="requestEditor" class="requestEditor editor col-md-6">{}</div>
+        <div id="responseEditor" class="responseEditor editor col-md-6">{}</div>
       </div>
     </div>
   </div>
@@ -143,7 +132,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
 <script>
-  require('./renderer.js')
+  require('./renderer');
 </script>
 
 </html>
