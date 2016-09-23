@@ -40,10 +40,6 @@ var createWindow = () => {
 var init = () => {
   app.on('ready', () => {
     createWindow();
-    if (process.env.NODE_ENV !== 'production') {
-      require('vue-devtools').install();
-      //mainWindow.webContents.openDevTools();
-    }
   });
 
   app.on('window-all-closed', () => {

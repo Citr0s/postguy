@@ -1,13 +1,16 @@
 {
   "name": "NotPostman",
-  "version": "1.0.0",
+  "productName": "NotPostman",
+  "version": "0.0.1",
   "description": "A postman replacement",
-  "main": "main.js",
+  "main": "app/main.js",
   "scripts": {
-    "start": "npm install && webpack && electron ./dist/main",
-    "dev": "webpack -w | electron ./dist/main --enable-logging",
+    "start": "npm install && webpack && electron ./app/main",
+    "dev": "webpack -w | electron ./app/main --enable-logging",
     "watch": "webpack -w",
-    "run": "electron ./dist/main"
+    "run": "electron ./app/main",
+    "pack": "webpack",
+    "release": "npm install && webpack && build --x64 --publish never"
   },
   "author": "Codeweavers",
   "license": "CC0-1.0",
@@ -15,6 +18,7 @@
     "clean-webpack-plugin": "^0.1.10",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.25.0",
+    "electron-builder": "^7.3.0",
     "electron-prebuilt": "^1.2.0",
     "file-loader": "^0.9.0",
     "jshint": "^2.9.3",
@@ -32,5 +36,29 @@
   },
   "jshintConfig": {
     "esversion": 6
+  },
+  "build": {
+    "appId": "com.example.notpostman",
+    "app-category-type": "your.app.category.type",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "resources/windows/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerHeaderIcon": "resources/windows/setup-icon.ico"
+    },
+    "mac": {
+      "icon": "resources/osx/icon.icns"
+    },
+    "dmg": {
+      "icon": "resources/osx/dmg-icon.icns",
+      "background": "resources/osx/dmg-background.png"
+    }
+  },
+  "directories": {
+    "buildResources": "resources"
   }
 }

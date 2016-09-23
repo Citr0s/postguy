@@ -8,7 +8,7 @@ module.exports = {
     main: './src/backend/main.js'
   },
   output: {
-    path:'./dist',
+    path:'./app',
     filename: '[name].js',
   },
   node: {
@@ -25,7 +25,7 @@ module.exports = {
   },
   externals: [nodeExternals()],
   plugins: [
-    new CleanWebpackPlugin(['bin'], {}),
+    new CleanWebpackPlugin(['app'], {}),
     new CopyWebpackPlugin([ { from: './src/live-package.json', to: './package.json' } ])
   ]
 };
