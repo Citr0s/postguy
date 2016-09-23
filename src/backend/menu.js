@@ -1,5 +1,5 @@
 const {Menu, dialog} = require('electron');
-var core = require('./core');
+var {projectDirectory} = require('./core');
 
 const template = [
   {
@@ -8,8 +8,8 @@ const template = [
       {
         label: 'Open Project',
         click(item, focusedWindow) {
-          core.projectDirectory = dialog.showOpenDialog({ properties: ['openDirectory'] });
-          loadProject(core.projectDirectory[0], (fileList) => {
+          projectDirectory = dialog.showOpenDialog({ properties: ['openDirectory'] });
+          loadProject(projectDirectory[0], (fileList) => {
             mainWindow.webContents.send('projectLoaded', fileList);
           }, { shortPath: true });
         }
@@ -19,7 +19,7 @@ const template = [
         type: 'checkbox',
         clicked: true,
         click(item, focusedWindow) {
-          core.saveHistory = !core.saveHistory;
+          saveHistory = !saveHistory;
         }
       }
     ]

@@ -139,6 +139,19 @@
       cursor:default;
       outline: none;
     }
+
+    .settings-wrapper__field{
+      border:1px solid #f1f1f1;
+      background-color:#333;
+      box-shadow:none;
+      color:#fff;
+      padding:5px 15px;
+      outline: none;
+
+      &:hover{
+        background-color:lighten(#333, 10%);
+      }
+    }
   }
 }
 
@@ -327,4 +340,9 @@ button[class^="_5"] {
 @keyframes spinLoad {
   from {transform:rotate(0deg); color:red;}
   to {transform:rotate(360deg);}
+}
+
+
+.light{
+  
 }

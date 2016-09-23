@@ -9,10 +9,12 @@
   var theme = 'github';
   var ace = require('./ace.js');
   var helpers = require('../helpers/helper.js');
+  var appDiv = document.getElementById('app');
   var submitButton = document.getElementById('submit');
   var submitLoader = document.getElementsByClassName('spacer')[0];
   var requestEditor = ace.setupEditor('requestEditor');
   var responseEditor = ace.setupEditor('responseEditor', true);
+  var preferences = localStorage.getItem("preferences");
 
   console.logJson = function (object) {
     console.log(helpers.formatJson(object));
@@ -22,6 +24,7 @@
     el: '#app',
     data: {
       submitting: false,
+      lightTheme: false,
       themes: require('./themes.js'),
       editorTheme: 'monokai',
       logs: [],
@@ -156,7 +159,7 @@
             body: {},
             displayValue: ''
           }
-        });
+      });
         this.currentTabIndex = this.tabs.length - 1;
       },
       removeTab: function (index) {
@@ -170,6 +173,9 @@
         this.currentTab.request.body = this.requestEditor;
         this.requestEditor = this.currentTab.request.body || '{}';
         this.responseEditor = this.currentTab.response.body || '{}';
+      },
+      toggleLightMode: function() {
+        vm.lightTheme = !vm.lightTheme;
       }
     }
   });
@@ -179,6 +185,8 @@
     vm.submitting = false;
     vm.currentTab.response = arg;
     vm.statusDetails = arg.response;
+    vm.statusDetails.responseSize = arg.response.headers['content-length'];
+
     submitButton.removeAttribute('disabled');
 
     submitLoader.classList.remove('spin');

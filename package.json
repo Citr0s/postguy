@@ -6,7 +6,7 @@
   "main": "app/main.js",
   "scripts": {
     "start": "npm install && webpack && electron ./app/main",
-    "dev": "webpack -w | electron ./app/main --enable-logging",
+    "dev": "webpack && webpack -w | electron ./app/main --enable-logging",
     "watch": "webpack -w",
     "run": "electron ./app/main",
     "pack": "webpack",
