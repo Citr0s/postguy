@@ -1,5 +1,6 @@
 {
   "name": "NotPostman",
+  "productName": "NotPostman",
   "version": "1.0.0",
   "description": "A postman replacement",
   "main": "main.js",
