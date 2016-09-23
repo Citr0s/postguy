@@ -1,3 +1,6 @@
+#generated files
+app/
+
 # Logs
 logs
 *.log
