@@ -1,4 +1,6 @@
 const {app, BrowserWindow} = require('electron');
+// app.commandLine.appendSwitch('remote-debugging-port', '8315');
+// app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
 
 const fileStore = require('./filestore');
 
@@ -39,6 +41,7 @@ var createWindow = () => {
 
 var init = () => {
   app.on('ready', () => {
+    BrowserWindow.addDevToolsExtension('C:\\Users\\Ryan\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\nhdogjmejiglipccpnnnanhbledajbpd\\2.1.2_0');
     createWindow();
   });
 

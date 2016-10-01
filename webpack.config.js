@@ -10,22 +10,30 @@ module.exports = {
   output: {
     path:'./app',
     filename: '[name].js',
+    pathinfo: true
   },
   node: {
     __dirname: false,
     __filename: false
   },
   target: 'electron',
-  module: {
+  module: { 
     loaders: [
       { test: /\.html/, loader: 'file?name=[name].[ext]' },
       { test: /\.scss$/, loaders: ["style", "css", "sass"] },
-      { test: /\.json$/, loaders: ["json"] }
+      { test: /\.json$/, loaders: ["json"] },
+      { test: /\.vue$/, loaders: ["vue"] }
     ]
   },
-  externals: [nodeExternals()],
+  // externals: [nodeExternals()],
+  vue: {
+    loaders: {
+      scss: 'vue-style!css!sass',
+      js: 'babel'
+    }
+  },
   plugins: [
-    new CleanWebpackPlugin(['app'], {}),
+    // new CleanWebpackPlugin(['app'], {}),
     new CopyWebpackPlugin([ { from: './src/live-package.json', to: './package.json' } ])
   ]
 };
