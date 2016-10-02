@@ -25,6 +25,7 @@
     "css-loader": "^0.25.0",
     "electron-builder": "^7.3.0",
     "electron-prebuilt": "^1.2.0",
+    "es6-promise": "^4.0.3",
     "file-loader": "^0.9.0",
     "inject-loader": "^3.0.0-beta1",
     "jasmine-core": "^2.5.2",

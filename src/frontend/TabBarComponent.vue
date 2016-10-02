@@ -33,25 +33,20 @@
         background-color:transparent;
         color: rgba(255, 255, 255, 0.3);
       }
-
       a{
         background-color: rgba(0, 0, 0, 0.1);
       }
-
       a:hover{
         background-color:rgba(0, 0, 0, 0.2);
         border-color:transparent;
       }
-
       .active{
         border-bottom: 1px solid #333;
       }
-
       li{
         a{
           border-left:none;
         }
-
         &.active{
           a{
             border-bottom:none;
@@ -75,8 +70,8 @@
     name: 'TabBarComponent',
     computed: {
       ...Vuex.mapState({
-        tabs: store => store.tabs,
-        currentTabIndex: store => store.currentTabIndex
+        tabs: store => store.TabModule.tabs,
+        currentTabIndex: store => store.TabModule.currentTabIndex
       })
     },
     methods: {

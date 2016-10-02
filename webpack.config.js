@@ -17,7 +17,7 @@ module.exports = {
     __filename: false
   },
   target: 'electron',
-  module: { 
+  module: {
     loaders: [
       { test: /\.html/, loader: 'file?name=[name].[ext]' },
       { test: /\.scss$/, loaders: ["style", "css", "sass"] },
@@ -26,7 +26,7 @@ module.exports = {
       { test: /\.js$/, loaders: ["babel"] }
     ]
   },
-  externals: [nodeExternals()],
+  // externals: [nodeExternals()],
   vue: {
     loaders: {
       scss: 'vue-style!css!sass',

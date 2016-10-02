@@ -14,7 +14,6 @@
   }
 </style>
 <script>
-  const bus = require('./EventBus.js')
   module.exports = {
     name: 'AceComponent',
     props: {
@@ -28,11 +27,13 @@
       }
     },
     mounted () {
-      bus.$on('TAB_CHANGE', () => {
-        Vue.nextTick(() => {
-          this._editor.setValue(this.value);
-          this._editor.setReadOnly(this.readonly);
-        })
+      this.$store.subscribe((mutation) => {
+        if (mutation.type === "CHANGE_TAB") {
+          Vue.nextTick(() => {
+            this._editor.setValue(this.value);
+            this._editor.setReadOnly(this.readonly);
+          })
+        }
       })
       const editor = this._editor = ace.edit(this.$refs.editor);
       const session = this._session = editor.getSession();

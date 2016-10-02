@@ -28,19 +28,17 @@ var vm = new Vue({
       return this.currentTab.request.url && !this.submitting;
     },
     ...Vuex.mapState({
-      tabs: store => store.tabs,
-      currentTabIndex: store => store.currentTabIndex,
+      tabs: store => store.TabModule.tabs,
+      currentTabIndex: store => store.TabModule.currentTabIndex,
       statusDetails: store => store.statusDetails,
       timeTaken: store => store.timeTaken,
       lightTheme: store => store.lightTheme,
       message: store => store.message,
       sidebarSelection: store => store.sidebarSelection,
       logs: store => store.logs,
-      submitting: store => store.submitting,
-      currentTab (store) {
-        return store.tabs[store.currentTabIndex];
-      }
-    })
+      submitting: store => store.submitting
+    }),
+    ...Vuex.mapGetters(['currentTab'])
   },
   methods: {
     // themeEditor: function (theme) {
@@ -85,6 +83,9 @@ var vm = new Vue({
     },
     toggleLightMode: function() {
       vm.lightTheme = !vm.lightTheme;
+    },
+    updateURL (e) {
+      this.$store.commit('UPDATE_URL', { tab: this.currentTab, newurl: e.target.value });
     }
   },
   components: {

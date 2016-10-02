@@ -49,7 +49,7 @@
               </div>
               <div class="col-md-6 request-properties__url-wrapper">
                 <div class="form-group">
-                  <input id="input" type="text" placeholder="http://localhost/api" v-model="currentTab.request.url" class="form-control url-wrapper__field">
+                  <input id="input" type="text" placeholder="http://localhost/api" @input="updateURL" :value="currentTab.request.url" class="form-control url-wrapper__field">
                 </div>
               </div>
               <div class="col-md-4 request-properties__button-wrapper" style="width: 38% !important;">

@@ -4,12 +4,12 @@
       <div class="header row" v-for="(header, index) in tab.request.headers">
         <div class="col-md-4">
           <div class="form-group">
-            <input type="text" placeholder="attribute" v-model="header.attribute" @input="onTextInput(index)" class="attribute form-control">
+            <input type="text" placeholder="attribute" :value="header.attribute" @input="onAttributeEdit(index, $event)" class="attribute form-control">
           </div>
         </div>
         <div class="col-md-7">
           <div class="form-group">
-            <input type="text" placeholder="value" v-model="header.value" @input="onTextInput(index)" class="value form-control">
+            <input type="text" placeholder="value" :value="header.value" @input="onValueEdit(index, $event)" class="value form-control">
           </div>
         </div>
         <div v-show="index != tab.request.headers.length-1" class="col-md-1">
@@ -36,15 +36,9 @@
   }
 </style>
 <script>
-  const bus = require('./EventBus.js')
   module.exports = {
     name: 'MainPanelComponent',
     props: ['tab'],
-    watch: {
-      'tab' () {
-        bus.$emit('TAB_CHANGE');
-      }
-    },
     methods: {
       onTextInput (index) {
         if (index === this.tab.request.headers.length - 1) {
@@ -52,10 +46,18 @@
         }
       },
       removeHeader (index) {
-        this.tab.request.headers.splice(index, 1);
+        this.$store.commit("REMOVE_HEADER", { tab: this.tab, index });
+      },
+      onValueEdit (index, e) {
+        this.onTextInput(index);
+        this.$store.commit("UPDATE_HEADER_VALUE", { header: this.tab.request.headers[index], value: e.target.value })
+      },
+      onAttributeEdit (index, e) {
+        this.onTextInput(index);
+        this.$store.commit("UPDATE_HEADER_ATTRIBUTE", { header: this.tab.request.headers[index], attribute: e.target.value })
       },
       addHeader () {
-        this.tab.request.headers.push({ attribute: '', value: '' });
+        this.$store.commit("ADD_HEADER", { tab: this.tab });
       }
     },
     components: {

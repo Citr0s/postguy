@@ -9,8 +9,11 @@ module.exports = function (config) {
     reporters: ['mocha'],
     // this is the entry file for all our tests.
     files: [
-      'src/tests.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js'
+      './node_modules/es6-promise/dist/es6-promise.auto.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/vuex/2.0.0/vuex.js',
+      'src/tests.js'
       ],
     // we will pass the entry file to webpack for bundling.
     preprocessors: {
