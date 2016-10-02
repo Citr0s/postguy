@@ -5,9 +5,9 @@
 Vue.config.silent = false;
 Vue.config.devtools = true;
 
+const store = require('./Vuex/Store.js');
 require("./index.html");
 require("./sass/main.scss");
-
 var ipc = require('electron').ipcRenderer;
 var theme = 'github';
 var helpers = require('../helpers/helper.js');
@@ -22,20 +22,25 @@ console.logJson = function (object) {
 
 var vm = new Vue({
   el: '#app',
-  data: require('./state.js').store,
+  store,
   computed: {
-    headers () {
-      return this.currentTab.request.headers.reduce(function (result, item) {
-        result[item.attribute] = item.value;
-        return result;
-      }, {});
-    },
     disableSubmit () {
       return this.currentTab.request.url && !this.submitting;
     },
-    currentTab () {
-      return this.tabs[this.currentTabIndex];
-    }
+    ...Vuex.mapState({
+      tabs: store => store.tabs,
+      currentTabIndex: store => store.currentTabIndex,
+      statusDetails: store => store.statusDetails,
+      timeTaken: store => store.timeTaken,
+      lightTheme: store => store.lightTheme,
+      message: store => store.message,
+      sidebarSelection: store => store.sidebarSelection,
+      logs: store => store.logs,
+      submitting: store => store.submitting,
+      currentTab (store) {
+        return store.tabs[store.currentTabIndex];
+      }
+    })
   },
   methods: {
     // themeEditor: function (theme) {

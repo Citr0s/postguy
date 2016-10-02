@@ -2,10 +2,10 @@
   <div class="tabbarcomponent">
     <div id="tabBar">
       <ul class="nav nav-tabs">
-        <li role="presentation" v-for="(tab, index) in store.tabs" v-on:click="changeTab(index)" v-bind:class="{'active': index === store.currentTabIndex}">
+        <li role="presentation" v-for="(tab, index) in tabs" v-on:click="changeTab(index)" v-bind:class="{'active': index === currentTabIndex}">
           <a>
             <input id="title" v-model="tab.request.url" v-bind:placeholder="'Tab ' + (index + 1)" disabled>
-            <button id="removeTab" type="button" v-on:click="removeTab(index)">
+            <button id="removeTab" type="button" v-on:click.stop="removeTab(index)">
               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>
           </a>
@@ -73,44 +73,14 @@
 <script>
   module.exports = {
     name: 'TabBarComponent',
-    data () {
-      return {
-        store: require('./state.js').store
-      }
+    computed: {
+      ...Vuex.mapState({
+        tabs: store => store.tabs,
+        currentTabIndex: store => store.currentTabIndex
+      })
     },
     methods: {
-      changeTab (index) {
-        this.store.currentTabIndex = index;
-      },
-      removeTab (index) {
-        this.store.tabs.splice(index, 1);
-        if (this.store.tabs.length === 0)
-          this.addTab();
-        this.store.currentTabIndex = this.store.tabs.length - 1;
-      },
-      addTab () {
-        this.store.tabs.push({
-          request: {
-            verb: 'get',
-            headers: [
-              {
-                attribute: '',
-                value: ''
-              }
-            ],
-            url: '',
-            body: '',
-            displayValue: ''
-          },
-          response: {
-            error: {},
-            response: {},
-            body: "",
-            displayValue: ''
-          }
-        });
-        this.store.currentTabIndex = this.store.tabs.length - 1;
-      }
+      ...Vuex.mapActions(['changeTab', 'addTab', 'removeTab'])
     }
   }
 </script>

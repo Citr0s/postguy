@@ -22,10 +22,11 @@ module.exports = {
       { test: /\.html/, loader: 'file?name=[name].[ext]' },
       { test: /\.scss$/, loaders: ["style", "css", "sass"] },
       { test: /\.json$/, loaders: ["json"] },
-      { test: /\.vue$/, loaders: ["vue"] }
+      { test: /\.vue$/, loaders: ["vue"] },
+      { test: /\.js$/, loaders: ["babel"] }
     ]
   },
-  // externals: [nodeExternals()],
+  externals: [nodeExternals()],
   vue: {
     loaders: {
       scss: 'vue-style!css!sass',
