@@ -6,71 +6,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-  <div id="app" v-bind:class="{'light': lightTheme}">
-    <div class="sidebar">
-      <div class="heading">
-          {{message}}
-      </div>
-      <select class="title" v-model="sidebarSelection">
-        <option value="history">History</option>
-        <option value="collections">Collections</option>
-      </select>
-      <div id="content">
-        <ul v-if="sidebarSelection === 'history'" id="requestLog">
-          <li class="loggedRequest" v-for="(index, log) in logs" v-on:click="loadLoggedRequest(index)">
-            <div id="verb" v-bind:class="[log.request.verb]">{{log.request.verb}}</div>
-            <div id="url">{{log.request.url}}</div>
-            <button id="remove" type="button" v-on:click="deleteLoggedRequest(index)">
-              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-          </li>
-        </ul>
-        <ul v-if="sidebarSelection === 'collections'">
-          <li v-for="(index, collection) in collections">
-            {{index}}
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="page">
-      <div id="headerBar">
-        <h1 class="topbar request-properties">
-          <form id="urlbar" v-on:submit.prevent="post()">
-              <div class="col-md-2 request-properties__type-wrapper">
-                <div class="form-group">
-                  <!--<select v-model="currentTab.request.verb" class="form-control type-wrapper__field">
-                    <option selected>get</option>
-                    <option>post</option>
-                    <option>put</option>
-                    <option>patch</option>
-                    <option>delete</option>
-                  </select>-->
-                </div>
-              </div>
-              <div class="col-md-6 request-properties__url-wrapper">
-                <div class="form-group">
-                  <input id="input" type="text" placeholder="http://localhost/api" @input="updateURL" :value="currentTab.request.url" class="form-control url-wrapper__field">
-                </div>
-              </div>
-              <div class="col-md-4 request-properties__button-wrapper" style="width: 38% !important;">
-                <div class="form-group">
-                  <button id="submit" type="submit" class="btn btn-primary button-wrapper__field">Send</button>
-                  <div class="spacer">|</div>
-                  <button type="button" v-bind:class="statusDetails != '' ? '_' + statusDetails.statusCode : ''" class="btn btn-primary status-wrapper__field">{{ statusDetails != '' ? statusDetails.statusCode + ' ' + statusDetails.statusMessage : 'Status'}}</button>
-                  <button type="button" class="btn btn-primary time-wrapper__field">{{ timeTaken != 0 ? timeTaken + ' ms' : 'Time Taken'}}</button>
-                  <button type="button" class="btn btn-primary time-wrapper__field">{{ statusDetails != '' ? statusDetails.responseSize + " bytes" : 'Response Size'}}</button>
-                  <button type="button" class="btn btn-primary settings-wrapper__field" v-on:click="toggleLightMode()"><span class="glyphicon glyphicon-cog"></span></button>
-                </div>
-              </div>
-          </form>
-        </h1>
-        <tab-bar-component :tabs="tabs"></tab-bar-component>
-      </div>
-      <div id="mainPanel">
-        <main-panel-component :tab="currentTab"></tab-component>
-      </div>
-    </div>
-  </div>
+  <app id="app"></app>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.js"></script>

@@ -223,6 +223,13 @@ describe('TabModuleTests', () => {
     });
   });
   describe('Mutations', () => {
+    it('should update the request verb', () => {
+      const mockRequest = {
+        verb: 'post'
+      };
+      TabModule.mutations.UPDATE_VERB({}, { request: mockRequest, newverb: "POST" });
+      expect(mockRequest.verb).toBe("POST");
+    });
     it('should update a header value', () => {
       const mockHeader = {
         attribute: "attr",
@@ -278,13 +285,12 @@ describe('TabModuleTests', () => {
           ],
           url: '',
           body: '',
-          displayValue: ''
         },
         response: {
-          error: {},
-          response: {},
+          statusCode: "",
           body: "",
-          displayValue: ''
+          timeTaken: 0,
+          responseSize: 0
         }
       }]);
     });

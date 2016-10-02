@@ -8,20 +8,6 @@ var {projectDirectory, saveHistory} = require('./core');
 
 var init = () => {
 
-  ipcMain.on('post', (event, arg) => {
-    request[arg.call](arg.request, (e, r, b) => {
-      var response = {
-        error: e,
-        response: r,
-        body: b
-      };
-      if (saveHistory) {
-        fileStore.save('history', helper.formatJson(Date.now()), { request: arg, response: response });
-      }
-      event.sender.send('reply', response);
-    });
-  });
-
   ipcMain.on('save', (event, arg) => {
     fileStore.save(projectDirectory, arg.name, arg.data);
   });

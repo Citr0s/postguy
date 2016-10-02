@@ -28,7 +28,7 @@
     },
     mounted () {
       this.$store.subscribe((mutation) => {
-        if (mutation.type === "CHANGE_TAB") {
+        if (["CHANGE_TAB", "UPDATE_RESPONSE", "LOAD_RESPONSE", "LOAD_REQUEST"].includes(mutation.type)) {
           Vue.nextTick(() => {
             this._editor.setValue(this.value);
             this._editor.setReadOnly(this.readonly);

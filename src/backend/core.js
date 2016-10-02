@@ -41,7 +41,6 @@ var createWindow = () => {
 
 var init = () => {
   app.on('ready', () => {
-    BrowserWindow.addDevToolsExtension('C:\\Users\\Ryan\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\nhdogjmejiglipccpnnnanhbledajbpd\\2.1.2_0');
     createWindow();
   });
 

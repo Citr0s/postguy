@@ -3,7 +3,7 @@ const TabModule = {
     currentTabIndex: 0,
     tabs: [{
       request: {
-        verb: 'get',
+        verb: 'post',
         headers: [{
           attribute: 'Content-Type',
           value: 'application/json'
@@ -18,17 +18,30 @@ const TabModule = {
         }      ],
         url: 'http://google.com',
         body: '',
-        displayValue: ''
       },
       response: {
-        error: {},
-        response: {},
+        statusCode: "",
         body: "",
-        displayValue: ''
+        timeTaken: 0,
+        responseSize: 0
       }
     }]
   },
   mutations: {
+    LOAD_RESPONSE (state, { tab, response }) {
+      tab.response = response;
+    },
+    LOAD_REQUEST ( state, { tab, request }) {
+      tab.request = request;
+    },
+    UPDATE_RESPONSE (state, { tab, statusCode, body, timeTaken }) {
+      tab.response.body = body;
+      tab.response.statusCode = statusCode;
+      tab.response.timeTaken = timeTaken;
+    },
+    UPDATE_VERB (state, { request, newverb }) {
+      request.verb = newverb
+    },
     UPDATE_URL (state, { tab, newurl }) {
       tab.request.url = newurl;
     },
@@ -59,13 +72,12 @@ const TabModule = {
           ],
           url: '',
           body: '',
-          displayValue: ''
         },
         response: {
-          error: {},
-          response: {},
+          statusCode: "",
           body: "",
-          displayValue: ''
+          timeTaken: 0,
+          responseSize: 0
         }
       });
     },
