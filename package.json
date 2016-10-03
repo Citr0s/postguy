@@ -46,6 +46,7 @@
     "vue": "^2.0.1",
     "vue-devtools": "^2.0.4",
     "vue-loader": "^9.5.1",
+    "vue-style-loader": "^1.0.0",
     "webpack": "^1.13.2",
     "webpack-node-externals": "^1.4.3"
   },
